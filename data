@@ -1,0 +1,15 @@
+import torch
+from torchvision import transforms
+from torchvision.datasets import MNIST
+from torch.utils.data import DataLoader
+
+def get_data_loaders(batch_size):
+    img_transform = transforms.Compose([transforms.ToTensor()])
+
+    train_dataset = MNIST(root='./data', train=True, download=True, transform=img_transform)
+    test_dataset = MNIST(root='./data', train=False, download=True, transform=img_transform)
+
+    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+    test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
+
+    return train_loader, test_loader
