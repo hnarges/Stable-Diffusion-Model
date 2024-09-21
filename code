@@ -1,1 +1,17 @@
+import torch
+from utils import vae_loss
+
+def test_vae(vae, test_loader, device):
+    vae.eval()
+    test_loss = 0
+
+    with torch.no_grad():
+        for data, _ in test_loader:
+            data = data.to(device)
+            recon_batch, mu, logvar = vae(data)
+            loss = vae_loss(recon_batch, data, mu, logvar)
+            test_loss += loss.item()
+
+    test_loss /= len(test_loader.dataset)
+    print(f'Test set loss: {test_loss}')
 
