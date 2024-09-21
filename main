@@ -1,0 +1,27 @@
+import torch
+from models import VariationalAutoencoder
+from data_loader import get_data_loaders
+from train import train_vae
+from test import test_vae
+
+# Hyperparameters
+latent_dims = 2
+capacity = 64
+num_epochs = 30
+batch_size = 128
+learning_rate = 1e-3
+
+# Check for GPU
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+# Data Loaders
+train_loader, test_loader = get_data_loaders(batch_size)
+
+# Initialize the VAE model
+vae = VariationalAutoencoder(capacity, latent_dims).to(device)
+
+# Train the model
+train_vae(vae, train_loader, device, num_epochs, learning_rate)
+
+# Test the model
+test_vae(vae, test_loader, device)
